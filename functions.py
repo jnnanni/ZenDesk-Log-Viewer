@@ -1,3 +1,9 @@
+import os
+import pandas as pd
+import requests
+from tabulate import tabulate
+from datetime import datetime
+
 def clearConsole():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -13,9 +19,10 @@ def convertFromZulu(time):
 
 def printIndividualTicket(table,id):
     startID = int(table[0]["id"])
-    while(id - startID not in range(0,25)):
+    while(id - startID not in range(0,len(table))):
         print("Valid ID Numbers for this page include "+str(startID)+"-"+str(startID+len(table)-1))
         id = int(input("Inavlid ID entered, please reenter: "))
+    clearConsole()
     index = id - startID
     entry = table[index]
     print("Subject: " + entry["subject"])
@@ -28,10 +35,7 @@ def printIndividualTicket(table,id):
     print("Created at: "+ convertFromZulu(entry["created_at"]))
     print("Updated at: "+ convertFromZulu(entry["updated_at"]))
     print("Submitter ID: " + str(entry["submitter_id"]))
-    return True
     
-
-
 def promptUser(prev=False,next=False):
     validInput = ["1","2","q"]
     print("[1] to reprint all entries on the current page")
